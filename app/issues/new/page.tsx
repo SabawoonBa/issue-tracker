@@ -17,6 +17,7 @@ type IssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
   const router = useRouter();
+  
   const {
     register,
     control,
