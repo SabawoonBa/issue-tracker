@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Button, Callout, TextArea, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
@@ -42,6 +42,7 @@ const IssueForm = ({issue}: { issue?: Issue }) => {
         await axios.post("/api/issues", data);
       }
       router.push("/issues");
+      router.refresh();
     } catch (error) {
       setIsSubmitting(false);
       setError("Unexpected Error Occured!!");
@@ -63,14 +64,7 @@ const IssueForm = ({issue}: { issue?: Issue }) => {
           <TextField.Input defaultValue={issue?.title} placeholder="Title" {...register("title")} />
         </TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
-        <Controller
-          name="description"
-          control={control}
-          defaultValue={issue?.description}
-          render={({ field }) => (
-            <SimpleMDE  placeholder="Description" {...field} />
-          )}
-        />
+        <TextArea size="3" placeholder="Description" defaultValue={issue?.description} {...register("description")}/>
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button disabled={isSubmitting}>{issue ? 'Update Issue' : 'Submit new Issue'}{' '} {isSubmitting && <Spinner />}</Button>
